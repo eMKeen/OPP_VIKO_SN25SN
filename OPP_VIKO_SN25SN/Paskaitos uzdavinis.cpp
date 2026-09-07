@@ -1,15 +1,18 @@
 #include <iostream>
 #include <string>
+#include <windows.h>
 
 using namespace std;
 
 
-int main() {
+int task1() {
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
 
     string toDay[] = {
         "Laurynas",
         "Erdenis",
-        "Dingaile",
+        "Dingailė",
         "Justina",
         "Stanislav",
         "Stase"
@@ -28,7 +31,7 @@ int main() {
         "Adrijonas",
         "Marija",
         "Liaugauda",
-        "Daumante",
+        "Daumantė",
         "Klementina",
         "Klodas",
         "Pamyra",
@@ -36,7 +39,7 @@ int main() {
     };
 
     cout << "++++++++++++++++++++++++" << endl;
-    cout << "Siandienos vardaniai yra" << endl;
+    cout << "Šiandienos vardaniai yra" << endl;
     for (int i = 0; i < size(toDay); i++) {
         cout << i + 1 << " " << toDay[i] << endl;
     }

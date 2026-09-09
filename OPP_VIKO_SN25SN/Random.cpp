@@ -5,7 +5,7 @@
 using namespace std;
 
 int task2() {
-	int _randomNumbers[19];
+	int _randomNumbers[19]{};
 
 	random_device _rn;
 	mt19937 _gen(_rn());

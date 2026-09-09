@@ -1,13 +1,10 @@
 #include <iostream>
 #include <string>
-#include <windows.h>
 
 using namespace std;
 
 
 int task1() {
-    SetConsoleOutputCP(CP_UTF8);
-    SetConsoleCP(CP_UTF8);
 
     string toDay[] = {
         "Laurynas",

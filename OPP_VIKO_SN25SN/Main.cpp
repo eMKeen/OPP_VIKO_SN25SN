@@ -1,4 +1,5 @@
 #include <iostream>
+#include <windows.h>
 
 using namespace std;
 
@@ -6,6 +7,9 @@ int task1();
 int task2();
 
 int main() {
+	SetConsoleOutputCP(CP_UTF8);
+	SetConsoleCP(CP_UTF8);
+
 	cout << "Pasirkinti uzduoti:" << endl;
 	cout << "Uzduotis 1" << endl;
 	cout << "Uzduotis 2" << endl;

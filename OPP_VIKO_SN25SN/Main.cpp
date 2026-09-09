@@ -10,13 +10,17 @@ int main() {
 	SetConsoleOutputCP(CP_UTF8);
 	SetConsoleCP(CP_UTF8);
 
-	cout << "Pasirkinti uzduoti:" << endl;
-	cout << "Uzduotis 1" << endl;
-	cout << "Uzduotis 2" << endl;
+	cout << "Pasirkinti uzduotį:" << endl;
+	cout << "Užduotis - 1" << endl;
+	cout << "Užduotis - 2" << endl;
+	cout << "Užbaigti - 0" << endl;
 	int _select;
 	cin >> _select;
 
 	switch(_select) {
+	case 0: { 
+		return 0;
+	}
 	case 1:	{ 
 		return task1();
 	} break;
@@ -24,8 +28,8 @@ int main() {
 		return task2();
 	} break;
 	default: {
-		cout << "Ivestis neteisinga" << endl;
-		return 0;
-	}
+		cout << "Įvestis neteisinga" << endl << endl;
+		return main();
+	}break;
 	}
 }

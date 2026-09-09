@@ -4,6 +4,8 @@
 
 using namespace std;
 
+int main();
+
 int task2() {
 	int _randomNumbers[19]{};
 
@@ -23,7 +25,7 @@ int task2() {
 	}
 
 	cout << "=====================" << endl;
-	cout << "Lgginiai skaiciai" << endl;
+	cout << "Lyginiai skaičiai" << endl;
 	int _eilesNumeris = 0;
 	for (int i = 0; i < 19; i++) {
 		if (_randomNumbers[i] % 2 == 0)	{
@@ -33,7 +35,7 @@ int task2() {
 	}
 
 	cout << "=====================" << endl;
-	cout << "Visu skaiciu suma" << endl;
+	cout << "Visų skaičių suma" << endl;
 	int _summ = 0;
 	for (int i = 0; i < 19; i++) {
 		_summ += _randomNumbers[i];
@@ -44,5 +46,5 @@ int task2() {
 	cin.ignore();
 	getline(cin, wait);
 
-	return 0;
+	return main();
 }

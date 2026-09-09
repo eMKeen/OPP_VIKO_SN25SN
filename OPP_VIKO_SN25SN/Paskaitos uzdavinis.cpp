@@ -3,6 +3,7 @@
 
 using namespace std;
 
+int main();
 
 int task1() {
 
@@ -52,5 +53,5 @@ int task1() {
     cin.ignore();
     getline(cin, wait);
 
-    return 0;
+    return main();
 }

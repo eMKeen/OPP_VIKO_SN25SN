@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="Paskaita_5_Class/Paskaita_5_Class.vcxproj" />
+</Solution>

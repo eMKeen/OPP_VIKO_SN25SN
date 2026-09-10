@@ -1,16 +1,19 @@
 
 //-------------------
 //|     |     |     |
-//| 3:1 | 3:2 | 3:3 |
+//| 1:1 | 1:2 | 1:3 |
 //-------------------
 //|     |     |     |
 //| 2:1 | 2:2 | 2:3 |
 //-------------------
 //|     |     |     |
-//| 1:1 | 1:2 | 1:3 |
+//| 3:1 | 3:2 | 3:3 |
 //-------------------
 #include <iostream>
 #include <conio.h>
+#include "Source.h"
+#include <format>
+#include <windows.h>
 
 using namespace std;
 
@@ -47,9 +50,11 @@ public:
 	}
 	Position getPos() {
 		return this->pos;
+
 	}
+
 	void moveUp() {
-		if (pos.getVert() < 3) {
+		if (pos.getVert() < table.getTableHeight()) {
 			pos.setVert(pos.getVert() + 1);
 		}
 	}
@@ -59,7 +64,7 @@ public:
 		}
 	}
 	void moveRight() {
-		if (pos.getHor() < 3) {
+		if (pos.getHor() < table.getTableWidth()) {
 			pos.setHor(pos.getHor() + 1);
 		}
 	}
@@ -71,14 +76,60 @@ public:
 };
 
 int main() {
+	SetConsoleOutputCP(CP_UTF8);
+	SetConsoleCP(CP_UTF8);
 
 	Piece piece;
-	piece.setPos(2, 2);
+	piece.setPos(1, 1);
+
+	int _step = 0;
+	int _select = 0;
+
+	cout << format("{:-<19} \n", "");
+	cout << format("Įveskite lentelės plotį: ");
+	cin >> _select;
+	table.setTableWidth(_select);
+	cout << endl;
+	cout << format("{:-<19} \n", "");
+	cout << format("Įveskite lentelės Aukštį: ");
+	cin >> _select;
+	table.setTableHeight(_select);
 
 
 
+	printTable(piece.getPos().getVert(), piece.getPos().getHor(), _step);
 
-	cout << "Current position is: "
-		<< piece.getPos().getVert() << " - "
-		<< piece.getPos().getHor() << endl;
+	while (true) {
+		int _key = _getch();
+
+		if (_key == 27) {
+			break;
+		}
+
+		_step++;
+
+		if (_key == 0 || _key == 224) {
+			_key = _getch();
+
+			switch (_key) {
+				case 80: { // UP (revert)
+					piece.moveUp();
+				}break;
+				case 72: { // DOWN (revert)
+					piece.moveDown();
+				}break;
+				case 75: { // LEFT
+					piece.moveLeft();
+				}break;
+				case 77: {
+					piece.moveRight();
+				}break;
+			}
+		}
+
+		//cout << "Current position is: "
+		//	<< piece.getPos().getVert() << " - "
+		//	<< piece.getPos().getHor() << endl;
+		printTable(piece.getPos().getVert(), piece.getPos().getHor(), _step);
+	}
 }

@@ -1,0 +1,12 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="Paskaita 1-2/OPP_VIKO_SN25SN/OPP_VIKO_SN25SN.vcxproj" Id="c4f83078-bd96-4aaf-aee1-5aa9469523a7" />
+  <Project Path="Paskaita 3-4/Paskaita_3-4/Paskaita_3-4.vcxproj" Id="1cf4e04b-2086-4d59-9aeb-28ba0dbd0bc6" />
+  <Project Path="Paskaita 7/Paskaita 7.vcxproj" Id="a8bbec6a-c964-4460-a689-2009780c27a5" />
+  <Project Path="Paskaita_5_Class/Paskaita_5_Class/Paskaita_5_Class.vcxproj" Id="07121929-0581-4d1c-a455-93a199749d4a" />
+  <Project Path="Paskaita_6_Class_CHESS/Paskaita_6_Class_CHESS/Paskaita_6_Class_CHESS.vcxproj" Id="70fae6b1-e989-412e-8242-268bbaf34f6f" />
+  <Project Path="testSkill/testSkill/testSkill.vcxproj" Id="58804904-15ab-461d-9efc-7970c45d0b9c" />
+</Solution>

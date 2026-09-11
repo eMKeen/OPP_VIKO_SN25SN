@@ -12,7 +12,7 @@ void printTable(int _vert, int _horiz, int _step) {
     int _y = table.getTableHeight() * 2;
     int _x = table.getTableWidth();
 
-    cout << format("{:-<{}}", "", table.getTableHeight() * 5 + table.getTableHeight() + 1) << endl;
+    cout << format("{:-<{}}", "", table.getTableWidth() * 5 + table.getTableWidth() + 1) << endl;
 
     for (int i = 1; i <= _y; i++) {
 
@@ -29,7 +29,7 @@ void printTable(int _vert, int _horiz, int _step) {
         cout << "|" << endl;
 
         if (i % 2 == 0) {
-            cout << format("{:-<{}}", "", table.getTableHeight() * 5 + table.getTableHeight() + 1) << endl;
+            cout << format("{:-<{}}", "", table.getTableWidth() * 5 + table.getTableWidth() + 1) << endl;
         }
     }
     cout << "Step: " << _step << endl;

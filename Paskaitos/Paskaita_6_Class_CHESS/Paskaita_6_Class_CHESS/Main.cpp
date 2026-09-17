@@ -121,7 +121,7 @@ int main() {
 				case 75: { // LEFT
 					piece.moveLeft();
 				}break;
-				case 77: {
+				case 77: { // RIGHT
 					piece.moveRight();
 				}break;
 			}

@@ -45,12 +45,16 @@ private:
 	int _remainLoginAttempts;
 
 public:
-	SUser(const string &userName, char role, const string &userId, EUserStatus userStatus, int remainLoginAttempts) {
-		_userName = userName;
-		_role = role;
-		_userId = userId;
-		_userStatus = userStatus;
-		_remainLoginAttempts = remainLoginAttempts;
+	SUser(const string &userName, 
+		char role, 
+		const string &userId, 
+		EUserStatus userStatus, 
+		int remainLoginAttempts) {
+			_userName = userName;
+			_role = role;
+			_userId = userId;
+			_userStatus = userStatus;
+			_remainLoginAttempts = remainLoginAttempts;
 	}
 
 	string getUserName() {
@@ -63,6 +67,19 @@ public:
 
 	string getUserId() {
 		return this->_userId;
+	}
+	
+	EUserStatus getUserStatus() {
+		return this->_userStatus;
+	}
+
+	int getRemainLoginAttempts() {
+		return this->_remainLoginAttempts;
+	}
+
+	void failedLoginAttempt() {
+		if (_remainLoginAttempts > 0) _remainLoginAttempts--;
+		if (_remainLoginAttempts == 0) _userStatus = EUserStatus::Blocked;
 	}
 };
 

@@ -11,12 +11,14 @@ using namespace std;
  * Inactive - The user account is inactive and login is not allowed.
  * Blocked  - The user account is blocked due to failed login attempts
  *            or administrative action.
+ * Error    - The user account status is invalid or could not be determined.
  */
 
 enum class EUserStatus {
 	Active,
 	Inactive,
-	Blocked
+	Blocked,
+	Error
 };
 
 /**

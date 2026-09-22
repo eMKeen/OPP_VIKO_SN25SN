@@ -42,30 +42,6 @@ int menuSelect(int _select, int _quantity, int _notNULL) { //start _notNULL
     }
 }
 
-void commonLine(int _lineLenght, string _text, int _select, int _menuSelect) {
-    int _textLenght = _text.length();
-    int _lineCorection = _text.length() - lithuanianLetters(_text);
-    switch (_select) {
-    default: {
-        cout << format("{:-<{}}", _text, _lineLenght) << endl; //Brukšnis
-    } break;
-    case 1: {
-        cout << format("{:<{}}", _text, _lineLenght) << endl; //Tiesig tekstas
-    }break;
-    case 2: {
-        cout << format("{:<{}}{:<{}}", "", (_lineLenght - _textLenght) / 2, _text, _textLenght) << endl; //Tekstas centruotas
-    }break;
-    case 3: {
-        string _menuText = " - " + to_string(_menuSelect);
-        cout << format("{:<{}}{:>5}", _text, _lineLenght + _lineCorection - 5, _menuText) << endl; // Menu select
-    }break;
-    case 4: {
-        cout << format("{:<{}}{:>3}", _text, _lineLenght + _lineCorection - 3, " - "); // Menu select
-    }break;
-
-    }
-}
-
 int lithuanianLetters(const string& txt) {
     int _lenght = 0;
 

@@ -100,5 +100,13 @@ bool login() {
 	SetConsoleCP(CP_UTF8);
 
     LoginData loginData;
+    CFormation format(50);
+
+    string _userName;
+    string _password;
+    int _select = 0;
+
+    format.commonLine("", ELineType::Separator, 0);
+    format.commonLine("Įveskite prisijungimo varda: ", ELineType::CenteredText, 0);
 
 }

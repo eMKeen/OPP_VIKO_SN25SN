@@ -9,6 +9,11 @@
 
 using namespace std;
 
+/**
+* @struct LoginData
+* @brief Stores user login and account data retrieved from a file or database.
+*/
+
 struct LoginData {
     string _userName;
     string _password;

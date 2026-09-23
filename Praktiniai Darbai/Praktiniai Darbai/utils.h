@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <format>
+#include <iostream>
 
 using namespace std;
 
@@ -9,8 +10,6 @@ string toLower(string text);
 void wait();
 
 int menuSelect(int _select, int _quantity, int _notNULL);
-
-void commonLine(int _lineLenght, string _text, int _select, int _menuSelect);
 
 int lithuanianLetters(const string& txt);
 
@@ -21,11 +20,11 @@ int lithuanianLetters(const string& txt);
 * Specifies how a line of text is formatted and displayed
 * by the CFormation class.
 *
-* @var Separator - Displays a separator line and is used as the default line type.
-* @var Text - Displays plain text.
-* @var CenteredText - Displays centered text.
-* @var MenuText - Displays text with a menu selection number.
-* @var Input - Displays text followed by an input indicator.
+* Separator - Displays a separator line and is used as the default line type.
+* Text - Displays plain text.
+* CenteredText - Displays centered text.
+* MenuText - Displays text with a menu selection number.
+* Input - Displays text followed by an input indicator.
 */
 enum class ELineType {
     Separator,

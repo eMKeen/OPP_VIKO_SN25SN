@@ -67,6 +67,12 @@ bool login(CUser& user) {
                     return false;
                 }
 
+                // Checks whether the user account data is invalid.
+                if (loginData.getUserStatus() == EUserStatus::Error) {
+                    announceMessage("Naudotojo profilis yra pažeistas","Kreipkitės į administratorių",true);
+                    return false;
+                }
+
                 // Checks the password.
                 if (loginData.getPassword() != _filledPassword) {
                     loginData.failedLoginAttempt(_inFile);

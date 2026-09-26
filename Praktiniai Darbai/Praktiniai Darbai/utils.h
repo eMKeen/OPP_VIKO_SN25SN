@@ -13,6 +13,8 @@ int menuSelect(int _select, int _quantity, int _notNULL);
 
 int lithuanianLetters(const string& txt);
 
+void announceMessage(const string& _text1, const string& _text2 = "", bool _wait = false);
+
 /**
 * @enum ELineType
 * @brief Defines the available line formatting types.
@@ -33,6 +35,8 @@ enum class ELineType {
     MenuText,
     Input
 };
+
+
 /**
 * @class CFormation
 * @brief Provides methods for formatting and displaying text in the console.
@@ -47,25 +51,47 @@ private:
     int _lineLength;
 
 public:
+
+    /**
+    * @brief Created a text formation object with the specified line lenght.
+    * 
+    * @param[in] lineLength length of the formatted out line.
+    */
     CFormation(int lineLength) : _lineLength(lineLength) {};
 
+    /**
+    * @brief Formats and displays a line of text in the console.
+    * 
+    * Displays the provided text according to the selected line type.
+    * @param[in] _text       - Text to be displayed
+    * @param[in] _lineType   - Type of formatting apllied to the text.
+    * @param[in] _menuSelect - Menu selection number used with MenuText.
+    */
     void commonLine(string _text, ELineType _lineType, int _menuSelect) {
         int _textLength = _text.length();
+
+        //Calculates the correction required for Lithuanian UTF-8 characters.
         int _lineCorection = _text.length() - lithuanianLetters(_text);
+
         switch (_lineType) {
+
         default: {
             cout << format("{:-<{}}", _text, _lineLength) << endl;
         } break;
+
         case ELineType::Text: {
             cout << format("{:<{}}", _text, _lineLength) << endl;
         }break;
+
         case ELineType::CenteredText: {
             cout << format("{:<{}}{:<{}}", "", (_lineLength - _textLength) / 2, _text, _textLength) << endl;
         }break;
+
         case ELineType::MenuText: {
             string _menuText = " - " + to_string(_menuSelect);
             cout << format("{:<{}}{:>5}", _text, _lineLength + _lineCorection - 5, _menuText) << endl;
         }break;
+
         case ELineType::Input: {
             cout << format("{:<{}}{:>3}", _text, _lineLength + _lineCorection - 3, " - ");
         }break;

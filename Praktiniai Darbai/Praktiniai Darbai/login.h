@@ -1,35 +1,33 @@
 #pragma once
+
 #include <string>
-#include <iostream>
 #include <fstream>
-#include <windows.h>
-#include <format>
-#include "login.h"
-#include "utils.h"
 #include "user.h"
+#include "utils.h"
 
 using namespace std;
 
-
 /**
-* @struct SLoginData
-* @brief Stores user login and account data retrieved from a file or database.
+* @class CLoginData
+* @brief Stores and manages user authentication data.
 *
-* Contains the user account information required for authentication.
-* The data is read from a file by the getData() funtion.
+* The class stores user account information retrieved from the account file
+* and provides methods required during authentication.
 *
-* @var _userName - user account name.
-* @var _password - account password.
-* @var _userId - Unique user identification number.
-* @var _role - User role in the system.
-* @var _userStatus - Current status of the user account.
-* @var _remainLoginAttempts - Number of remaining login attempts.
+* _userName - User account name.
+* _password - User account password.
+* _userId - Unique user identification number.
+* _role - User role in the system.
+* _userStatus - Current status of the user account.
+* _remainLoginAttempts - Number of remaining login attempts.
+* _attemptsPosition - Position of the login attempts value in the file.
+* _statusPosition - Position of the user status value in the file.
 *
-* @note the user's account password is used only for authentication
-*       and is not passed futher in the system
+* @note The user's password is used only for authentication
+*       and is not passed further into the system.
 */
-
-struct SLoginData {
+class CLoginData {
+private:
     string _userName;
     string _password;
     string _userId;
@@ -37,64 +35,179 @@ struct SLoginData {
     EUserStatus _userStatus{ EUserStatus::Error };
     int _remainLoginAttempts{ 0 };
 
+    streampos _attemptsPosition;
+    streampos _statusPosition;
+
+public:
     /**
     * @brief Reads user account data from a file.
     *
     * Reads the username, password, user ID, role, account status,
-    * and number of remaining login attempts from the input file.
+    * and number of remaining login attempts.
     *
-    * @param[in] _inFile Input file stream containing  the user account data.
-    * @return true if the user data was read successfully; otetherwise false.
+    * @param[in] file File stream containing the user account data.
+    * @return true if the user data was read successfully; otherwise false.
     */
-    bool getData(ifstream& _inFile) {
+    bool getData(fstream& file) {
 
-        /// Reads the username.
-        if (!getline(_inFile, _userName, ';') || _userName.empty())
+        // Reads the username.
+        if (!getline(file, _userName, ';') || _userName.empty())
             return false;
 
-        /// Reads the password.
-        /// @note Password will be validated during authentication.
-        getline(_inFile, _password, ';');
+        // Reads the password.
+        getline(file, _password, ';');
 
-        /// Reads the unique user's ID number.
-        if (!getline(_inFile, _userId, ';') || _userId.empty())
+        // Reads the unique user ID.
+        if (!getline(file, _userId, ';') || _userId.empty())
             return false;
 
-        /// Reads the role.
-        // Temporary string used to read the user role from the file.
-        string _lookUpRole;
-        if (!getline(_inFile, _lookUpRole, ';')
-            || _lookUpRole.empty())
+        // Reads the user role.
+        string lookUpRole;
+
+        if (!getline(file, lookUpRole, ';') || lookUpRole.empty())
             return false;
 
-        // Only the first character is used because the role is stored as a char.
-        _role = _lookUpRole[0];
+        _role = lookUpRole[0];
 
-        /// Reads the status.
-        // Temporary string used to read the user role from the file.
-        string _status;
-        getline(_inFile, _status, ';');
+        // Saves the position of the account status in the file.
+        _statusPosition = file.tellg();
 
-        if (_status == "Active")
+        // Reads the account status.
+        string status;
+        getline(file, status, ';');
+
+        if (status == "a")
             _userStatus = EUserStatus::Active;
-        else if (_status == "Inactive")
+        else if (status == "i")
             _userStatus = EUserStatus::Inactive;
-        else if (_status == "Blocked")
+        else if (status == "b")
             _userStatus = EUserStatus::Blocked;
         else
             _userStatus = EUserStatus::Error;
 
-        /// Reads the number of login attepmpts.
-        string _attempts;
-        if (!getline(_inFile, _attempts, ';') || _attempts.empty())
+        // Saves the position of the remaining login attempts.
+        _attemptsPosition = file.tellg();
+
+        // Reads the number of remaining login attempts.
+        string attempts;
+
+        if (!getline(file, attempts) || attempts.empty())
             return false;
 
-        // Converts the string to int because _remainLoginAttempts is stored as an integer.
-        _remainLoginAttempts = stoi(_attempts);
+        _remainLoginAttempts = stoi(attempts);
+
+        // An account with no remaining attempts is blocked.
+        if (_remainLoginAttempts == 0)
+            _userStatus = EUserStatus::Blocked;
 
         return true;
+    }
+
+    /**
+    * @brief Processes a failed login attempt.
+    *
+    * Decreases the number of remaining login attempts by one
+    * and updates the value in the account file.
+    *
+    * If no attempts remain, the account is blocked and its
+    * status in the file is changed to 'b'.
+    *
+    * @param[in,out] file Account file stream.
+    */
+    void failedLoginAttempt(fstream& file) {
+
+        if (_remainLoginAttempts > 0)
+            _remainLoginAttempts--;
+
+        file.clear();
+        file.seekp(_attemptsPosition);
+        file << _remainLoginAttempts;
+
+        if (_remainLoginAttempts == 0) {
+
+            _userStatus = EUserStatus::Blocked;
+
+            file.seekp(_statusPosition);
+            file << 'b';
+        }
+
+        file.flush();
+    }
+
+
+    /**
+    * @brief Processes a successful login attempt.
+    *
+    * Resets the failed login attempt counter.
+    *
+    * @param[in,out] file Account file stream.
+    */
+    void successfulLoginAttempt(fstream& file) {
+
+        _remainLoginAttempts = 4;
+
+        file.clear();
+        file.seekp(_attemptsPosition);
+        file << _remainLoginAttempts;
+        file.flush();
+    }
+
+    /**
+    * @brief Gets the username.
+    *
+    * @return User account name.
+    */
+    string getUserName() const {
+        return _userName;
+    }
+
+    /**
+    * @brief Gets the password.
+    *
+    * @return User account password.
+    */
+    string getPassword() const {
+        return _password;
+    }
+
+    /**
+    * @brief Gets the user ID.
+    *
+    * @return Unique user identification number.
+    */
+    string getUserId() const {
+        return _userId;
+    }
+
+    /**
+    * @brief Gets the user role.
+    *
+    * @return User role.
+    */
+    char getRole() const {
+        return _role;
+    }
+
+    /**
+    * @brief Gets the account status.
+    *
+    * @return Current user account status.
+    */
+    EUserStatus getUserStatus() const {
+        return _userStatus;
+    }
+
+    /**
+    * @brief Gets the number of remaining login attempts.
+    *
+    * @return Number of remaining login attempts.
+    */
+    int getRemainLoginAttempts() const {
+        return _remainLoginAttempts;
     }
 };
 
 
-bool login();
+bool login(CUser& user);
+
+void enterData(CFormation& format, string& filledName, string& filledPassword);

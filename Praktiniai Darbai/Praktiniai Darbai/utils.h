@@ -15,6 +15,8 @@ int lithuanianLetters(const string& txt);
 
 void announceMessage(const string& _text1, const string& _text2 = "", bool _wait = false);
 
+void getPassword(string& password);
+
 /**
 * @enum ELineType
 * @brief Defines the available line formatting types.

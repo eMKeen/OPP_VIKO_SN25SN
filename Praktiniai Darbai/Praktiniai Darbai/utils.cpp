@@ -3,6 +3,7 @@
 #include "utils.h"
 #include <iostream>
 #include <format>
+#include <conio.h>
 
 using namespace std;
 
@@ -144,5 +145,39 @@ void enterData(CFormation& format, std::string& _filledName, std::string& _fille
     format.commonLine("", ELineType::Separator, 0);
     format.commonLine("Įveskite slaptažodį: ", ELineType::Input, 0);
 
-    getline(cin, _filledPassword);
+    getPassword(_filledPassword);
+}
+
+/**
+* @brief Reads a password from the console without displaying entered characters.
+*
+* Reads characters one by one until the Enter key is pressed.
+* The Backspace key removes the last entered character.
+* Each entered character is displayed as an asterisk - *.
+*
+* @param password - Stores the password entered by the user.
+*/
+void getPassword(string &password) 
+{
+    password.clear();
+
+    char _ch;
+
+    while (true) {
+        _ch = _getch();
+
+        if (_ch == '\r') {
+            cout << endl;
+            break;
+        }
+        if (_ch == '\b') {
+            if (!password.empty()) {
+                password.pop_back();
+                cout << "\b \b";
+            }
+            continue;
+        }
+        password += _ch;
+        cout << '*';
+    }
 }

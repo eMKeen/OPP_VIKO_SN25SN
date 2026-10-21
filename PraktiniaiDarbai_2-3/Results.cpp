@@ -94,11 +94,16 @@ CScoreBoard::CScoreBoard(const string& _path) : CFileStorage(_path) {
 
 bool CScoreBoard::isValid(const CResult& _result) const {
     CPlayer _player;
-    return _player.setUserName(_result._userName) &&
-        _result._total >= 10 && _result._total <= 50 && _result._total % 10 == 0 &&
-        _result._correct >= 0 && _result._correct <= _result._total &&
-        isfinite(_result._seconds) && _result._seconds >= 0 &&
-        _result._points >= 0 && _result._points <= _result._correct * 200;
+    return _player.setUserName(_result._userName) && //Check if the username is valid
+        _result._total >= 10 && // At least 10 qwestions
+        _result._total <= 50 && // No more than 50 qwestions
+        _result._total % 10 == 0 && // Question count must be a multiple of 10
+        _result._correct >= 0 && // Correct answer count cannot be negative
+        _result._correct <= _result._total && // Correct answers cannot exceed total qwuestions
+        isfinite(_result._seconds) && // Time cannot be infinity or NaN
+        _result._seconds >= 0 && // Time cannot be negative
+        _result._points >= 0 && // Points cannot be negative
+        _result._points <= _result._correct * 200; // At most 200 points per correct answer
 }
 
 bool CScoreBoard::hasHigherScore(const CResult& _first, const CResult& _second) {
@@ -110,9 +115,12 @@ bool CScoreBoard::saveResult(const CResult& _result) const {
         return false;
 
     ostringstream _line;
-    _line.imbue(locale::classic());
-    _line << _result._userName << ';' << _result._correct << ';' << _result._total << ';'
-        << fixed << setprecision(3) << _result._seconds << ';' << _result._points;
+    _line.imbue(locale::classic()); // Use a dot as the decimal separator
+    _line << _result._userName << ';' // Write the usernam
+        << _result._correct << ';' // Write the correct answer count
+        << _result._total << ';' // Write the total question count
+        << fixed << setprecision(3) << _result._seconds << ';' // Write the with 3 desimal places
+        << _result._points; //Write the total points
 
     return appendLine(_line.str());
 }
@@ -132,8 +140,15 @@ bool CScoreBoard::getResults(vector<CResult>& _results, int& _skipped) const {
         char _separator1{ 0 }, _separator2{ 0 }, _separator3{ 0 };
 
         bool _valid = static_cast<bool>(getline(_input, _result._userName, ';') &&
-            (_input >> _result._correct >> _separator1 >> _result._total >> _separator2 >>
-                _result._seconds >> _separator3 >> _result._points));
+            (_input 
+                >> _result._correct 
+                >> _separator1 
+                >> _result._total 
+                >> _separator2 
+                >> _result._seconds 
+                >> _separator3 
+                >> _result._points
+                ));
         _input >> ws;
 
         if (_valid && _input.eof() && _separator1 == ';' && _separator2 == ';' &&
@@ -153,17 +168,19 @@ void CScoreBoard::displayResults(const vector<CResult>& _results, const CFormati
 
     vector<string> _lines{
         "REZULTATŲ LENTELĖ",
-        _format.fitText("Vardas", 25) + _format.fitText("Teisingi/Viso", 15) +
-        _format.fitText("Laikas (s)", 14) + "Taškai"
+        _format.fitText("Vardas", 25) + 
+        _format.fitText("Teisingi/Viso", 15) +
+        _format.fitText("Laikas (s)", 14) + 
+        "Taškai"
     };
 
     for (const CResult& _result : _results) {
         ostringstream _time;
         _time << fixed << setprecision(2) << _result._seconds;
 
-        _lines.push_back(_format.fitText(_result._userName, 25) +
-            _format.fitText(to_string(_result._correct) + "/" + to_string(_result._total), 15) +
-            _format.fitText(_time.str(), 14) + to_string(_result._points));
+        _lines.push_back(_format.fitText(_result._userName, 25) 
+            + _format.fitText(to_string(_result._correct) + "/" + to_string(_result._total), 15) 
+            + _format.fitText(_time.str(), 14) + to_string(_result._points));
     }
 
     if (_results.empty())

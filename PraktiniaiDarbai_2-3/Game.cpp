@@ -82,7 +82,7 @@ bool CGame::playGame(int _mode) {
         system("cls");
 
         _task->generate(_limit);
-        _format.displayBox({ "Klausimas " + to_string(_question) + " / " + to_string(_total),
+        _format.displayBox({ "Klausimas " + to_string(_question) + " / " + to_string(_total), 
             _task->getName(), _task->getExpression() + " = ?" });
 
         int _answer{ 0 };
@@ -99,9 +99,9 @@ bool CGame::playGame(int _mode) {
         int _earned = _score.calculatePoints(_isCorrect, _task->getWeight(), _seconds);
         _score += _earned;
 
-        _format.displayBox({ _isCorrect ? "TEISINGAI!" : "NETEISINGAI!",
+        _format.displayBox({ _isCorrect ? "TEISINGAI!" : "NETEISINGAI!", 
             "Teisingas atsakymas: " + to_string(_task->calculate()) });
-        cout << fixed << setprecision(2) << "Laikas: " << _seconds << " s | +" << _earned
+        cout << fixed << setprecision(2) << "Laikas: " << _seconds << " s | +" << _earned 
             << " taškų | Iš viso: " << _score.getPoints() << endl;
 
         // Wait after each question result. This pause does not affect the score.
@@ -146,8 +146,15 @@ void CGame::run() {
 
 
     while (true) {
-        _format.displayBox({ "1. Sudėtis", "2. Atimtis", "3. Daugyba", "4. Dalyba",
-            "5. Mišrūs veiksmai", "6. Rezultatų lentelė", "0. Baigti" });
+        _format.displayBox({ 
+            "1. Sudėtis", 
+            "2. Atimtis", 
+            "3. Daugyba", 
+            "4. Dalyba", 
+            "5. Mišrūs veiksmai", 
+            "6. Rezultatų lentelė", 
+            "0. Baigti" 
+            });
 
         int _mode{ 0 };
         if (!_format.getInteger("Pasirinkimas: ", 0, 6, _mode) || _mode == 0)
